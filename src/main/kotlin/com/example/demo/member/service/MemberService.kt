@@ -15,7 +15,9 @@ class MemberService(
      * 회원가입
      */
     fun signUp(memberDtoRequest: MemberDtoRequest): Boolean {
-        if (idExist(memberDtoRequest)) return false // ID 중복 검사
+        if (idExist(memberDtoRequest)) { // ID 중복 검사
+            return false
+        }
         memberRepository.save(dtoToEntity(memberDtoRequest))
         return true
     }
