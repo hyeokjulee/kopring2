@@ -1,11 +1,12 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
+	val kotlinVersion = "1.9.22"
 	id("org.springframework.boot") version "3.2.3"
 	id("io.spring.dependency-management") version "1.1.4"
-	kotlin("jvm") version "1.9.22"
-	kotlin("plugin.spring") version "1.9.22"
-	kotlin("plugin.jpa") version "1.9.22"
+	kotlin("jvm") version kotlinVersion
+	kotlin("plugin.spring") version kotlinVersion
+	kotlin("plugin.jpa") version kotlinVersion
 }
 
 group = "com.example"
@@ -27,6 +28,14 @@ dependencies {
 	developmentOnly("org.springframework.boot:spring-boot-devtools")
 	runtimeOnly("org.mariadb.jdbc:mariadb-java-client")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
+}
+
+allOpen {
+	annotations("jakarta.persistence.Entity")
+}
+
+noArg {
+	annotations("jakarta.persistence.Entity")
 }
 
 tasks.withType<KotlinCompile> {
