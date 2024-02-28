@@ -1,5 +1,6 @@
 package com.example.demo.member.service
 
+import com.example.demo.common.exception.InvalidInputException
 import com.example.demo.member.dto.MemberDtoRequest
 import com.example.demo.member.entity.Member
 import com.example.demo.member.repositoty.MemberRepository
@@ -14,27 +15,10 @@ class MemberService(
     /**
      * 회원가입
      */
-    fun signUp(memberDtoRequest: MemberDtoRequest): Boolean {
-        if (idExist(memberDtoRequest)) { // ID 중복 검사
-            return false
+    fun signUp(memberDtoRequest: MemberDtoRequest) {
+        if (memberRepository.findByLoginId(memberDtoRequest.loginId) != null) { // ID 중복 검사
+            throw InvalidInputException("loginId", "이미 등록된 ID 입니다.")
         }
-        memberRepository.save(dtoToEntity(memberDtoRequest))
-        return true
-    }
-
-    private fun idExist(memberDtoRequest: MemberDtoRequest): Boolean {
-        return memberRepository.findByLoginId(memberDtoRequest.loginId) != null
-    }
-
-    private fun dtoToEntity(memberDtoRequest: MemberDtoRequest): Member {
-        return Member(
-            null,
-            memberDtoRequest.loginId,
-            memberDtoRequest.password,
-            memberDtoRequest.name,
-            memberDtoRequest.birthDate,
-            memberDtoRequest.gender,
-            memberDtoRequest.email
-        )
+        memberRepository.save(memberDtoRequest.toEntity())
     }
 }

@@ -1,5 +1,6 @@
 package com.example.demo.member.controller
 
+import com.example.demo.common.dto.BaseResponse
 import com.example.demo.member.dto.MemberDtoRequest
 import com.example.demo.member.service.MemberService
 import jakarta.validation.Valid
@@ -17,10 +18,8 @@ class MemberController(
      * 회원가입
      */
     @PostMapping("/signup")
-    fun signUp(@RequestBody @Valid memberDtoRequest: MemberDtoRequest): String {
-        if (memberService.signUp(memberDtoRequest)) {
-            return "회원가입이 완료되었습니다."
-        }
-        return "이미 등록된 ID입니다."
+    fun signUp(@RequestBody @Valid memberDtoRequest: MemberDtoRequest): BaseResponse<Unit> {
+        memberService.signUp(memberDtoRequest)
+        return BaseResponse(message = "회원가입이 완료되었습니다.")
     }
 }
