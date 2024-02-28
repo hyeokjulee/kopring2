@@ -14,14 +14,18 @@ class MemberService(
     /**
      * 회원가입
      */
-    fun signUp(memberDtoRequest: MemberDtoRequest): String {
-        // ID 중복 검사
-        var member: Member? = memberRepository.findByLoginId(memberDtoRequest.loginId)
-        if (member != null) {
-            return "이미 등록된 ID입니다."
-        }
+    fun signUp(memberDtoRequest: MemberDtoRequest): Boolean {
+        if (loginIdExist(memberDtoRequest)) return false // ID 중복 검사
+        memberRepository.save(dtoToEntity(memberDtoRequest))
+        return true
+    }
 
-        member = Member(
+    private fun loginIdExist(memberDtoRequest: MemberDtoRequest): Boolean {
+        return memberRepository.findByLoginId(memberDtoRequest.loginId) != null
+    }
+
+    private fun dtoToEntity(memberDtoRequest: MemberDtoRequest): Member {
+        return Member(
             null,
             memberDtoRequest.loginId,
             memberDtoRequest.password,
@@ -30,9 +34,5 @@ class MemberService(
             memberDtoRequest.gender,
             memberDtoRequest.email
         )
-
-        memberRepository.save(member)
-
-        return "회원가입이 완료되었습니다."
     }
 }

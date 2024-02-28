@@ -17,6 +17,6 @@ class MemberController(
      */
     @PostMapping("/signup")
     fun signUp(@RequestBody memberDtoRequest: MemberDtoRequest): String {
-        return memberService.signUp(memberDtoRequest)
+        return if(memberService.signUp(memberDtoRequest)) "회원가입이 완료되었습니다." else "이미 등록된 ID입니다."
     }
 }
