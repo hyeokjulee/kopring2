@@ -15,12 +15,12 @@ class MemberService(
      * 회원가입
      */
     fun signUp(memberDtoRequest: MemberDtoRequest): Boolean {
-        if (loginIdExist(memberDtoRequest)) return false // ID 중복 검사
+        if (idExist(memberDtoRequest)) return false // ID 중복 검사
         memberRepository.save(dtoToEntity(memberDtoRequest))
         return true
     }
 
-    private fun loginIdExist(memberDtoRequest: MemberDtoRequest): Boolean {
+    private fun idExist(memberDtoRequest: MemberDtoRequest): Boolean {
         return memberRepository.findByLoginId(memberDtoRequest.loginId) != null
     }
 
