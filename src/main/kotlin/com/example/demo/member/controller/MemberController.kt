@@ -40,7 +40,7 @@ class MemberController(
     /**
      * 내 정보 보기
      */
-    @GetMapping("/info")
+    @GetMapping("/info/{id}")
     fun searchMyInfo(@PathVariable id: Long): BaseResponse<MemberDtoResponse> {
         val response = memberService.searchMyInfo(id)
         return BaseResponse(data = response)
