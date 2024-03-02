@@ -33,7 +33,7 @@ class MemberService(
             throw InvalidInputException("loginId", "이미 등록된 ID 입니다.")
         }
 
-        val member = memberDtoRequest.toEntity()
+        val member: Member = memberDtoRequest.toEntity()
         memberRepository.save(member)
 
         val memberRole: MemberRole = MemberRole(null, ROLE.MEMBER, member)
@@ -56,5 +56,13 @@ class MemberService(
     fun searchMyInfo(id: Long): MemberDtoResponse {
         val member: Member = memberRepository.findByIdOrNull(id) ?: throw InvalidInputException("id", "회원번호(${id}가 존재하지 않는 유저입니다.")
         return member.toDto()
+    }
+
+    /**
+     * 내 정보 수정
+     */
+    fun saveMyInfo(memberDtoRequest: MemberDtoRequest) {
+        val member: Member = memberDtoRequest.toEntity()
+        memberRepository.save(member)
     }
 }
