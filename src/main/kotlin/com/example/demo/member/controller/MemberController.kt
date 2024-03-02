@@ -53,7 +53,7 @@ class MemberController(
     /**
      * 내 정보 보기
      */
-    @PutMapping("/saveMyInfo")
+    @PutMapping("/info")
     fun saveMyInfo(@RequestBody @Valid memberDtoRequest: MemberDtoRequest): BaseResponse<Unit> {
         val userId = (SecurityContextHolder.getContext().authentication.principal as CustomUser).userId
         memberDtoRequest.id = userId
