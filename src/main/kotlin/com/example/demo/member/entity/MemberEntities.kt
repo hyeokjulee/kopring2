@@ -2,8 +2,10 @@ package com.example.demo.member.entity
 
 import com.example.demo.common.status.Gender
 import com.example.demo.common.status.ROLE
+import com.example.demo.member.dto.MemberDtoResponse
 import jakarta.persistence.*
 import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 
 @Entity
 @Table(
@@ -32,10 +34,16 @@ class Member(
     val gender: Gender,
 
     @Column(nullable = false, length = 30)
-    val email: String,
+    val email: String
 ) {
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "member")
     val memberRole: List<MemberRole>? = null
+
+    private fun LocalDate.formatDate(): String =
+        this.format(DateTimeFormatter.ofPattern("yyyyMMdd"))
+
+    fun toDto(): MemberDtoResponse =
+        MemberDtoResponse(id!!, loginId, name, birthDate.formatDate(), gender.desc, email)
 }
 
 @Entity
